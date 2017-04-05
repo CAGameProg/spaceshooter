@@ -1,21 +1,33 @@
 package main
 
 import (
-	"fmt"
-	"time"
+	"runtime"
 
 	sf "github.com/zyedidia/sfml/v2.3/sfml"
 )
 
+const (
+	screenWidth  = 800
+	screenHeight = 600
+)
+
 func main() {
-	res := NewResources() // You will write this function
+	runtime.LockOSThread()
 
-	// Now you can use textures and assets to play a sound for example:
-	sound := sf.NewSound(res.sounds["sfx_laser1.ogg"])
-	sound.Play()
+	window := sf.NewRenderWindow(sf.VideoMode{screenWidth, screenHeight, 32}, "Rectangle", sf.StyleDefault, nil)
+	window.SetVerticalSyncEnabled(true)
+	window.SetFramerateLimit(60)
 
-	// Or you could make a new sprite from an image:
-	fmt.Println(res.images["playerShip1_blue.png"])
+	for window.IsOpen() {
+		if event := window.PollEvent(); event != nil {
+			switch event.Type {
+			case sf.EventClosed:
+				window.Close()
+			}
+		}
 
-	time.Sleep(2 * time.Second)
+		window.Clear(sf.ColorWhite)
+
+		window.Display()
+	}
 }
