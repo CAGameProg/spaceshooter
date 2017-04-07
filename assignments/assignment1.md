@@ -1,3 +1,9 @@
+# Notes
+
+If your code is broken you can always copy the code from [here](https://github.com/CAGameProg/spaceshooter) which is where we left off from last class.
+
+For those of you on Mac with errors when running files that say `Killed: 9`, remember to compile with `go build -ldflags -s`.
+
 # 1. Set the player's origin
 
 One thing you might notice is that the top left corner of the player is
