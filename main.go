@@ -2,6 +2,7 @@ package main
 
 import (
 	"runtime"
+	"time"
 
 	sf "github.com/zyedidia/sfml/v2.3/sfml"
 )
@@ -9,6 +10,11 @@ import (
 const (
 	screenWidth  = 800
 	screenHeight = 600
+
+	shipMaxSpeed    = 4
+	shipAccel       = 0.25
+	shipDecel       = 0.15
+	shipRotateSpeed = 3
 )
 
 var res *Resources
@@ -22,9 +28,12 @@ func main() {
 	window.SetVerticalSyncEnabled(true)
 	window.SetFramerateLimit(60)
 
-	player := NewPlayer(sf.Vector2f{screenWidth / 2, screenHeight / 2})
+	player := NewPlayer([5]sf.KeyCode{sf.KeyUp, sf.KeyDown, sf.KeyLeft, sf.KeyRight, sf.KeySpace}, sf.Vector2f{screenWidth / 2, screenHeight / 2})
 
+	var dt float32
 	for window.IsOpen() {
+		start := time.Now()
+
 		if event := window.PollEvent(); event != nil {
 			switch event.Type {
 			case sf.EventClosed:
@@ -32,10 +41,15 @@ func main() {
 			}
 		}
 
+		player.Update(dt)
+
 		window.Clear(sf.ColorWhite)
 
 		window.Draw(player)
 
 		window.Display()
+
+		elapsed := time.Since(start)
+		dt = float32(elapsed) / float32(time.Second)
 	}
 }

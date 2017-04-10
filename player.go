@@ -1,6 +1,7 @@
 package main
 
 import sf "github.com/zyedidia/sfml/v2.3/sfml"
+import "math"
 
 type Player struct {
 	*sf.Sprite
@@ -9,13 +10,50 @@ type Player struct {
 	keys  [5]sf.KeyCode
 }
 
-func NewPlayer(pos sf.Vector2f) *Player {
+func NewPlayer(keys [5]sf.KeyCode, pos sf.Vector2f) *Player {
 	player := new(Player)
 	player.Sprite = sf.NewSprite(res.images["playerShip1_blue.png"])
 
 	player.SetPosition(pos)
 
-	player.keys = [5]sf.KeyCode{sf.KeyUp, sf.KeyDown, sf.KeyLeft, sf.KeyRight, sf.KeySpace}
+	player.keys = keys
+
+	size := player.GetGlobalBounds()
+	player.SetOrigin(sf.Vector2f{size.Width / 2, size.Height / 2})
 
 	return player
+}
+
+func (p *Player) Update(dt float32) {
+	if sf.KeyboardIsKeyPressed(p.keys[0]) {
+		if p.speed < shipMaxSpeed {
+			p.speed += shipAccel
+		}
+	} else {
+		if p.speed > 0 {
+			p.speed -= shipDecel
+		}
+	}
+
+	if sf.KeyboardIsKeyPressed(p.keys[2]) {
+		p.Rotate(-shipRotateSpeed * dt * 60)
+	}
+	if sf.KeyboardIsKeyPressed(p.keys[3]) {
+		p.Rotate(shipRotateSpeed * dt * 60)
+	}
+
+	if p.speed < 0 {
+		p.speed = 0
+	}
+	if p.speed > shipMaxSpeed {
+		p.speed = shipMaxSpeed
+	}
+
+	angle := p.GetRotation() - 90
+	angleRad := angle * math.Pi / 180
+
+	vx := p.speed * float32(math.Cos(float64(angleRad)))
+	vy := p.speed * float32(math.Sin(float64(angleRad)))
+
+	p.Move(sf.Vector2f{vx * dt * 60, vy * dt * 60})
 }
