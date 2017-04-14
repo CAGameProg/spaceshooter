@@ -71,7 +71,7 @@ If you are struggling, you can look at the hint below.
 
 <details>
   <summary>Click to see hint</summary>
-  <code>
+  <pre>
   if x position < 0 - width/2:
       set x position to screenWidth + width/2
   if x position > screenWidth + width/2:
@@ -81,7 +81,7 @@ If you are struggling, you can look at the hint below.
       set y position to screenHeight + height/2
   if y position > screenHeight + height/2:
       set y position to 0 - height/2
-  </code>
+  </pre>
 
   You may want to use `GetPosition`, `SetPosition` and `GetGlobalBounds`.
 </details>
