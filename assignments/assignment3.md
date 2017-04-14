@@ -76,7 +76,6 @@ If you are struggling, you can look at the hint below.
       set x position to screenWidth + width/2
   if x position > screenWidth + width/2:
       set x position to 0 - width/2
-
   if y position < 0 - height/2:
       set y position to screenHeight + height/2
   if y position > screenHeight + height/2:
