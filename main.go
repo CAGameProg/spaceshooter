@@ -15,9 +15,14 @@ const (
 	shipAccel       = 0.25
 	shipDecel       = 0.15
 	shipRotateSpeed = 3
+
+	shootCooldown = 250 * time.Millisecond
+
+	laserSpeed = 8
 )
 
 var res *Resources
+var lasers []*Laser
 
 func main() {
 	runtime.LockOSThread()
@@ -43,9 +48,17 @@ func main() {
 
 		player.Update(dt)
 
+		for _, l := range lasers {
+			l.Update(dt)
+		}
+
 		window.Clear(sf.ColorWhite)
 
 		window.Draw(player)
+
+		for _, l := range lasers {
+			window.Draw(l)
+		}
 
 		window.Display()
 

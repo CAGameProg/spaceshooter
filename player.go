@@ -1,13 +1,18 @@
 package main
 
-import sf "github.com/zyedidia/sfml/v2.3/sfml"
-import "math"
+import (
+	"math"
+	"time"
+
+	sf "github.com/zyedidia/sfml/v2.3/sfml"
+)
 
 type Player struct {
 	*sf.Sprite
 
-	speed float32
-	keys  [5]sf.KeyCode
+	speed    float32
+	keys     [5]sf.KeyCode
+	canShoot bool
 }
 
 func NewPlayer(keys [5]sf.KeyCode, pos sf.Vector2f) *Player {
@@ -17,11 +22,26 @@ func NewPlayer(keys [5]sf.KeyCode, pos sf.Vector2f) *Player {
 	player.SetPosition(pos)
 
 	player.keys = keys
+	player.canShoot = true
 
 	size := player.GetGlobalBounds()
 	player.SetOrigin(sf.Vector2f{size.Width / 2, size.Height / 2})
 
 	return player
+}
+
+func (p *Player) Shoot() {
+	if p.canShoot {
+		laser := NewLaser(p.GetPosition(), p.GetRotation(), laserSpeed)
+		lasers = append(lasers, laser)
+
+		p.canShoot = false
+
+		go func() {
+			time.Sleep(shootCooldown)
+			p.canShoot = true
+		}()
+	}
 }
 
 func (p *Player) Update(dt float32) {
@@ -40,6 +60,10 @@ func (p *Player) Update(dt float32) {
 	}
 	if sf.KeyboardIsKeyPressed(p.keys[3]) {
 		p.Rotate(shipRotateSpeed * dt * 60)
+	}
+
+	if sf.KeyboardIsKeyPressed(p.keys[4]) {
+		p.Shoot()
 	}
 
 	if p.speed < 0 {
