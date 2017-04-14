@@ -38,7 +38,7 @@ This function should create a new asteroid object with the correct qualities.
 
 **Note**: For the asteroid images, you must download the new images placed in the [asteroids](../assets/images/asteroids) folder. Place the `asteroids` folder in `assets/images`.
 
-You may choose one of the images, or look in the Bonus section at the bottom a guide
+You may choose one of the images, or look in the Bonus section at the bottom for a guide
 on how to randomly select an image.
 
 # Update method
@@ -71,7 +71,7 @@ If you are struggling, you can look at the hint below.
 
 <details>
   <summary>Click to see hint</summary>
-  ```
+  <code>
   if x position < 0 - width/2:
       set x position to screenWidth + width/2
   if x position > screenWidth + width/2:
@@ -81,7 +81,7 @@ If you are struggling, you can look at the hint below.
       set y position to screenHeight + height/2
   if y position > screenHeight + height/2:
       set y position to 0 - height/2
-    ```
+  </code>
 
   You may want to use `GetPosition`, `SetPosition` and `GetGlobalBounds`.
 </details>
