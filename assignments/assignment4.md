@@ -48,6 +48,24 @@ Here are some images to help you visualize:
 
 ![collision 2](collision2.png)
 
+If you're stumped on how to implement this, there is a shortcut (but please think about it a bit first!).
+
+The `GetGlobalBounds()` function isn't just useful for finding the width and the height of a sprite. It also has an `Intersects` method already written. Check it out in the [documentation](https://godoc.org/gitlab.com/tapir/sfml/v2.3/sfml#Rectf)
+
+Here is the definition (`GetGlobalBounds()` returns a `sf.Rectf` object):
+
+```go
+func (f sf.Rectf) Intersects(other sf.Rectf) (bool, Rectf)
+```
+
+Since the function returns to objects, and we only care about the boolean, we will just throw away the second return object.
+
+Here's a small example to get you started:
+
+```go
+doTheyIntersect, _ := bounds1.Intersects(bounds2)
+```
+
 # Destroying Asteroids
 
 During last class, we added a `dead` boolean to the `Laser` struct to determine when a laser should be removed from the game. We used
