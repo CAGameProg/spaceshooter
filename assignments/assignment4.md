@@ -76,6 +76,16 @@ game loop, remember to remove all asteroids from the `asteroids` array (this is 
 
 Here is the removal loop we wrote for the lasers:
 
+```go
+var tempLasers []*Laser
+for _, l := range lasers {
+    if !l.dead {
+        tempLasers = append(tempLasers, l)
+    }
+}
+lasers = tempLasers
+```
+
 # Checking collisions
 
 Now in the main game loop, before all the sprites are drawn, you can loop through all lasers, and check if each is intersecting with an asteroid.
