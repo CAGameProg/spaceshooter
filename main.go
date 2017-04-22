@@ -1,6 +1,7 @@
 package main
 
 import (
+	"math/rand"
 	"runtime"
 	"time"
 
@@ -8,8 +9,8 @@ import (
 )
 
 const (
-	screenWidth  = 800
-	screenHeight = 600
+	screenWidth  = 1200
+	screenHeight = 800
 
 	shipMaxSpeed    = 4
 	shipAccel       = 0.25
@@ -19,12 +20,21 @@ const (
 	shootCooldown = 250 * time.Millisecond
 
 	laserSpeed = 8
+
+	numAsteroids = 6
 )
+
+func random(min, max float32) float32 {
+	return rand.Float32()*(max-min) + min
+}
 
 var res *Resources
 var lasers []*Laser
+var asteroids []*Asteroid
 
 func main() {
+	rand.Seed(time.Now().UTC().UnixNano())
+
 	runtime.LockOSThread()
 
 	res = NewResources()
@@ -34,6 +44,16 @@ func main() {
 	window.SetFramerateLimit(60)
 
 	player := NewPlayer([5]sf.KeyCode{sf.KeyUp, sf.KeyDown, sf.KeyLeft, sf.KeyRight, sf.KeySpace}, sf.Vector2f{screenWidth / 2, screenHeight / 2})
+
+	for i := 0; i < numAsteroids; i++ {
+		pos := sf.Vector2f{random(0, screenWidth), random(0, screenHeight)}
+		speed := random(3, 7)
+		rotationSpeed := random(2, 5)
+		rotationAngle := random(0, 360)
+
+		asteroid := NewAsteroid(pos, rotationSpeed, rotationAngle, speed)
+		asteroids = append(asteroids, asteroid)
+	}
 
 	var dt float32
 	for window.IsOpen() {
@@ -51,16 +71,30 @@ func main() {
 		for _, l := range lasers {
 			l.Update(dt)
 		}
+		for _, a := range asteroids {
+			a.Update(dt)
+		}
 
-		window.Clear(sf.ColorWhite)
+		window.Clear(sf.ColorBlack)
 
 		window.Draw(player)
 
 		for _, l := range lasers {
 			window.Draw(l)
 		}
+		for _, a := range asteroids {
+			window.Draw(a)
+		}
 
 		window.Display()
+
+		var tempLasers []*Laser
+		for _, l := range lasers {
+			if !l.dead {
+				tempLasers = append(tempLasers, l)
+			}
+		}
+		lasers = tempLasers
 
 		elapsed := time.Since(start)
 		dt = float32(elapsed) / float32(time.Second)

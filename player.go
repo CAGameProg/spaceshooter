@@ -80,4 +80,6 @@ func (p *Player) Update(dt float32) {
 	vy := p.speed * float32(math.Sin(float64(angleRad)))
 
 	p.Move(sf.Vector2f{vx * dt * 60, vy * dt * 60})
+
+	Wrap(p.Sprite)
 }

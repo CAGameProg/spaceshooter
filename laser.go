@@ -10,6 +10,7 @@ type Laser struct {
 	*sf.Sprite
 
 	speed float32
+	dead  bool
 }
 
 func NewLaser(pos sf.Vector2f, rotation float32, speed float32) *Laser {
@@ -28,6 +29,18 @@ func NewLaser(pos sf.Vector2f, rotation float32, speed float32) *Laser {
 }
 
 func (l *Laser) Update(dt float32) {
+	size := l.GetGlobalBounds()
+
+	pos := l.GetPosition()
+	x := pos.X
+	y := pos.Y
+
+	if x < 0-size.Width/2 || x > screenWidth+size.Width/2 ||
+		y < 0-size.Height/2 || y > screenHeight+size.Height/2 {
+
+		l.dead = true
+	}
+
 	angle := l.GetRotation() - 90
 	angleRad := angle * math.Pi / 180
 
