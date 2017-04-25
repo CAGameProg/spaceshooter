@@ -35,6 +35,10 @@ func (p *Player) Shoot() {
 		laser := NewLaser(p.GetPosition(), p.GetRotation(), laserSpeed)
 		lasers = append(lasers, laser)
 
+		soundBuffer := res.sounds["sfx_laser1.ogg"]
+		sound := sf.NewSound(soundBuffer)
+		sound.Play()
+
 		p.canShoot = false
 
 		go func() {

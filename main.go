@@ -75,6 +75,19 @@ func main() {
 			a.Update(dt)
 		}
 
+		for _, l := range lasers {
+			for _, a := range asteroids {
+				if Intersects(l.Sprite, a.Sprite) {
+					a.dead = true
+					l.dead = true
+
+					soundBuffer := res.sounds["sfx_explosion.wav"]
+					sound := sf.NewSound(soundBuffer)
+					sound.Play()
+				}
+			}
+		}
+
 		window.Clear(sf.ColorBlack)
 
 		window.Draw(player)
@@ -95,6 +108,14 @@ func main() {
 			}
 		}
 		lasers = tempLasers
+
+		var tempAsteroids []*Asteroid
+		for _, a := range asteroids {
+			if !a.dead {
+				tempAsteroids = append(tempAsteroids, a)
+			}
+		}
+		asteroids = tempAsteroids
 
 		elapsed := time.Since(start)
 		dt = float32(elapsed) / float32(time.Second)

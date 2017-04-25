@@ -48,26 +48,3 @@ func (a *Asteroid) Update(dt float32) {
 
 	Wrap(a.Sprite)
 }
-
-func Wrap(s *sf.Sprite) {
-	pos := s.GetPosition()
-	size := s.GetGlobalBounds()
-
-	xPos := pos.X
-	yPos := pos.Y
-
-	if xPos < 0-size.Width/2 {
-		pos.X = screenWidth + size.Width/2
-	}
-	if xPos > screenWidth+size.Width/2 {
-		pos.X = 0 - size.Width/2
-	}
-	if yPos < 0-size.Height/2 {
-		pos.Y = screenHeight + size.Height/2
-	}
-	if yPos > screenHeight+size.Height/2 {
-		pos.Y = 0 - size.Height/2
-	}
-
-	s.SetPosition(pos)
-}
