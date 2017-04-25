@@ -29,5 +29,5 @@ After `window.Display` create some logic similar to the ones for `lasers` and `a
 
 ---
 
-Now you probably want to spawn the explosions when a laser collides with an asteroid. We made a double for loop to check for intersections in `main.go` inside this for loop,
+Now you probably want to spawn the explosions when a laser collides with an asteroid. We made a double for loop to check for intersections in `main.go`. Inside this for loop,
 if the asteroid `a` is intersecting with the laser `l`, you should call `SpawnExplosion(a.GetPosition())` to spawn an explosion at the asteroid's position.
