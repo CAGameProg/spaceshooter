@@ -1,5 +1,8 @@
 # Explosions
 
+**NOTE**: Remember to update your assets folder with the new explosion images which are located [here](../assets/images/explosions). Put this folder in your `assets`
+folder under `assets/images/explosions`.
+
 We have already created the explosion struct in class. But now we need to make sure that every explosion is displayed every frame.
 
 Create a global `explosions` array which will hold the explosion objects. You should put the declaration in `main.go` next to the `lasers`, `asteroids`... arrays.
